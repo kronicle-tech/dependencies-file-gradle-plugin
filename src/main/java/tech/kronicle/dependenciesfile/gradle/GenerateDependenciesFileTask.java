@@ -1,18 +1,17 @@
 package tech.kronicle.dependenciesfile.gradle;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import lombok.SneakyThrows;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.ConfigurationContainer;
-import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.*;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import tech.kronicle.dependenciesfile.gradle.models.OutputConfiguration;
 import tech.kronicle.dependenciesfile.gradle.models.OutputDependency;
+import tech.kronicle.dependenciesfile.gradle.models.OutputResolvedDependency;
 import tech.kronicle.dependenciesfile.gradle.models.OutputRoot;
 
 import java.io.File;
@@ -22,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -51,6 +51,7 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
 
     private List<OutputConfiguration> mapConfigurations(ConfigurationContainer configurations) {
         return configurations.stream()
+                .filter(Configuration::isCanBeResolved)
                 .sorted(Comparator.comparing(Configuration::getName))
                 .map(this::mapConfiguration)
                 .collect(toList());
@@ -60,10 +61,14 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
         return OutputConfiguration.builder()
                 .name(configuration.getName())
                 .dependencies(mapDependencies(configuration.getDependencies()))
+                .resolvedDependencies(mapResolvedDependencies(configuration.getResolvedConfiguration().getFirstLevelModuleDependencies()))
                 .build();
     }
-    
+
     private List<OutputDependency> mapDependencies(DependencySet dependencies) {
+        if (dependencies.isEmpty()) {
+            return null;
+        }
         return dependencies.stream()
                 .sorted(Comparator.comparing(Dependency::getName))
                 .map(this::mapDependency)
@@ -79,8 +84,30 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
                 .build();
     }
 
+    private List<OutputResolvedDependency> mapResolvedDependencies(Set<ResolvedDependency> dependencies) {
+        if (dependencies.isEmpty()) {
+            return null;
+        }
+        return dependencies.stream()
+                .sorted(Comparator.comparing(ResolvedDependency::getName))
+                .map(this::mapResolvedDependency)
+                .collect(toList());
+    }
+
+    private OutputResolvedDependency mapResolvedDependency(ResolvedDependency dependency) {
+        return OutputResolvedDependency.builder()
+                .name(dependency.getName())
+                .moduleGroup(dependency.getModuleGroup())
+                .moduleName(dependency.getModuleName())
+                .moduleVersion(dependency.getModuleVersion())
+                .resolvedDependencies(mapResolvedDependencies(dependency.getChildren()))
+                .build();
+    }
+
     private String writeYaml(OutputRoot root) throws JsonProcessingException {
-        return new YAMLMapper().writeValueAsString(root);
+        return new YAMLMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .writeValueAsString(root);
     }
 
     private void writeGradleDependenciesFile(String yaml) throws IOException {
