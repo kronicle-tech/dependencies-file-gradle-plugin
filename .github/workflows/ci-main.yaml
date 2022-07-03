@@ -33,12 +33,9 @@ jobs:
         run: ./gradlew release -Prelease.customUsername=${{ github.actor }} -Prelease.customPassword=${{ github.token }}
 
   ci-build:
-    uses: ./.github/workflows/ci-shared-build-and-publish.yaml
+    uses: ./.github/workflows/ci-shared-build.yaml
     needs: ci-tag
-    permissions:
-      contents: write
     with:
       caching: false
       build_tasks: build
-      publish_plugins: false
     secrets: inherit
