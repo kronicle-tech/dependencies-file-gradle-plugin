@@ -12,6 +12,7 @@ repositories {
 
 group = "tech.kronicle.dependencies-file"
 description "Gradle plugin for generating a gradle-dependencies.yaml file"
+version = if (System.getenv("CI") != null) scmVersion.version else "0.0.1"
 
 gradlePlugin {
     plugins {
