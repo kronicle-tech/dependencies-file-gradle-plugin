@@ -3,8 +3,10 @@ package tech.kronicle.dependenciesfile.gradle;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.tasks.TaskContainer;
+import org.gradle.api.tasks.TaskProvider;
 
 public class DependenciesFilePlugin implements Plugin<Project> {
 
@@ -14,6 +16,10 @@ public class DependenciesFilePlugin implements Plugin<Project> {
 
         String projectName = target.toString();
         tasks.register(GenerateDependenciesFileTask.TASK_NAME, GenerateDependenciesFileTask.class, new GenerateDependenciesFileTaskAction(projectName));
+        TaskProvider<Task> buildTaskProvider = tasks.named("build");
+        if (buildTaskProvider.isPresent()) {
+            buildTaskProvider.configure(task -> task.dependsOn(GenerateDependenciesFileTask.TASK_NAME));
+        }
     }
 
     private static class GenerateDependenciesFileTaskAction implements Action<GenerateDependenciesFileTask> {

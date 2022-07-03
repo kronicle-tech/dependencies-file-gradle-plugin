@@ -7,9 +7,11 @@ import java.util.List;
 
 @Value
 @Builder
-public class OutputConfiguration {
+public class OutputResolvedDependency {
 
     String name;
-    List<OutputDependency> dependencies;
+    String moduleName;
+    String moduleGroup;
+    String moduleVersion;
     List<OutputResolvedDependency> resolvedDependencies;
 }
