@@ -1,0 +1,19 @@
+# This file is read automatically by Kronicle https://kronicle.tech
+
+components:
+  - id: dependencies-file-gradle-plugin
+    name: Dependencies File Gradle Plugin
+    type: gradle-plugin
+    repo:
+      url: https://github.com/kronicle-tech/dependencies-file-gradle-plugin.git
+    description: |
+      Gradle plugin that generates `gradle-dependencies.yaml` files
+    teams:
+      - teamId: kronicle-project
+    responsibilities:
+      - description: |
+          When added to a Gradle-based codebase, the plugin generates a `gradle-dependencies.yaml` file for each 
+          project in the codebase where the plugin is enabled.  The `gradle-dependencies.yaml` file contains the 
+          details of all of a Gradle project's dependencies and is similar to npm's `package-lock.json` file, except 
+          the `gradle-dependencies.yaml` is only used for recording the details of dependencies used and is not used 
+          to "lock" those dependencies.  

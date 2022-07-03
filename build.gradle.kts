@@ -3,6 +3,7 @@ plugins {
     `maven-publish`
     id("com.gradle.plugin-publish") version "1.0.0"
     id("pl.allegro.tech.build.axion-release") version "1.13.14"
+    id("io.freefair.lombok") version "6.5.0.2"
 }
 
 repositories {
@@ -36,4 +37,15 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
     withSourcesJar()
+}
+
+tasks.compileJava {
+    options.release.set(8)
+}
+
+apply(from = "gradle/kronicle-metadata.gradle.kts")
+
+dependencies {
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.3")
 }
