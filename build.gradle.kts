@@ -1,6 +1,6 @@
 plugins {
-    `java-gradle-plugin`
-    `maven-publish`
+    id("java-gradle-plugin")
+    id("maven-publish")
     id("com.gradle.plugin-publish") version "1.0.0"
     id("pl.allegro.tech.build.axion-release") version "1.13.14"
     id("io.freefair.lombok") version "6.5.0.2"
@@ -15,7 +15,7 @@ description "Gradle plugin for generating a gradle-dependencies.yaml file"
 
 gradlePlugin {
     plugins {
-        create("simplePlugin") {
+        create("dependenciesFilePlugin") {
             id = "tech.kronicle.dependencies-file"
             implementationClass = "tech.kronicle.dependenciesfile.gradle.DependenciesFilePlugin"
             displayName = "Dependencies File"
@@ -29,7 +29,7 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/kronicle-tech/dependencies-file-gradle-plugin"
     vcsUrl = "https://github.com/kronicle-tech/dependencies-file-gradle-plugin.git"
-    tags = listOf("gradle", "dependencies")
+    tags = listOf("gradle", "dependencies", "lock")
 }
 
 java {

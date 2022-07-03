@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: publish
     permissions:
-      packages: write
       contents: write
 
     steps:
@@ -37,10 +36,9 @@ jobs:
     uses: ./.github/workflows/ci-shared-build-and-publish.yaml
     needs: ci-tag
     permissions:
-      packages: write
       contents: write
     with:
       caching: false
       build_tasks: build
-      publish_jars: true
+      publish_plugins: true
     secrets: inherit
