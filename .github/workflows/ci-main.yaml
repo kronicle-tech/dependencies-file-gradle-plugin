@@ -40,5 +40,5 @@ jobs:
     with:
       caching: false
       build_tasks: build
-      publish_plugins: true
+      publish_plugins: false
     secrets: inherit
