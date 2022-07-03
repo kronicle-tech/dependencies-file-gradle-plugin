@@ -1,0 +1,46 @@
+name: CI Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  ci-tag:
+    runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        # Based on https://axion-release-plugin.readthedocs.io/en/latest/configuration/ci_servers/#github-actions
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Tag build
+        # Based on https://axion-release-plugin.readthedocs.io/en/latest/configuration/ci_servers/#github-actions
+        run: ./gradlew release -Prelease.customUsername=${{ github.actor }} -Prelease.customPassword=${{ github.token }}
+
+  ci-build:
+    uses: ./.github/workflows/ci-shared-build-and-publish.yaml
+    needs: ci-tag
+    permissions:
+      packages: write
+      contents: write
+    with:
+      caching: false
+      build_tasks: build
+      publish_jars: true
+    secrets: inherit
