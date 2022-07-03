@@ -11,7 +11,7 @@ on:
         description: The space separated names of the Gradle tasks to execute
         required: true
         type: string
-      publish_jars:
+      publish_plugins:
         description: Whether the job should publish JARs
         required: true
         type: boolean
@@ -48,18 +48,20 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
+      - name: Build
+        run: |
+          ./gradlew ${{ inputs.build_tasks }}
+
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::$(./gradlew currentVersion -q -Prelease.quiet)
 
-      - name: Publish JARs to Maven Central
-        if: ${{ inputs.publish_jars }}
-        run: ./gradlew --no-parallel publish
+      - name: Publish Plugins
+        if: ${{ inputs.publish_plugins }}
+        run: ./gradlew publishPlugins -Pgradle.publish.key=$GRADLE_PUBLISH_KEY -Pgradle.publish.secret=$GRADLE_PUBLISH_SECRET
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
 
       - name: Clean up Gradle Cache
         if: ${{ inputs.caching }}
