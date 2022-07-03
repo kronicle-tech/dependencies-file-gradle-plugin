@@ -30,7 +30,7 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/kronicle-tech/dependencies-file-gradle-plugin"
     vcsUrl = "https://github.com/kronicle-tech/dependencies-file-gradle-plugin.git"
-    tags = listOf("gradle", "dependencies", "lock")
+    tags = listOf("dependencies", "file", "lock")
 }
 
 java {
