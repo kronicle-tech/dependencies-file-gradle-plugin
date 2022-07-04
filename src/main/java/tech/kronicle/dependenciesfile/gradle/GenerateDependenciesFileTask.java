@@ -18,9 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
@@ -51,17 +51,21 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
 
     private List<OutputConfiguration> mapConfigurations(ConfigurationContainer configurations) {
         return configurations.stream()
-                .filter(Configuration::isCanBeResolved)
                 .sorted(Comparator.comparing(Configuration::getName))
                 .map(this::mapConfiguration)
                 .collect(toList());
     }
 
     private OutputConfiguration mapConfiguration(Configuration configuration) {
+        List<OutputResolvedDependency> resolvedDependencies = mapResolvedDependencies(configuration);
         return OutputConfiguration.builder()
                 .name(configuration.getName())
+                .description(configuration.getDescription())
+                .visible(configuration.isVisible())
+                .canBeResolved(configuration.isCanBeResolved())
+                .resolved(Objects.nonNull(resolvedDependencies))
                 .dependencies(mapDependencies(configuration.getDependencies()))
-                .resolvedDependencies(mapResolvedDependencies(configuration.getResolvedConfiguration().getFirstLevelModuleDependencies()))
+                .resolvedDependencies(resolvedDependencies)
                 .build();
     }
 
@@ -82,6 +86,17 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
                 .reason(dependency.getReason())
                 .version(dependency.getVersion())
                 .build();
+    }
+
+    private List<OutputResolvedDependency> mapResolvedDependencies(Configuration configuration) {
+        if (!configuration.isCanBeResolved()) {
+            return null;
+        }
+        ResolvedConfiguration resolvedConfiguration = configuration.getResolvedConfiguration();
+        if (resolvedConfiguration.hasError()) {
+            return null;
+        }
+        return mapResolvedDependencies(resolvedConfiguration.getFirstLevelModuleDependencies());
     }
 
     private List<OutputResolvedDependency> mapResolvedDependencies(Set<ResolvedDependency> dependencies) {
@@ -112,6 +127,6 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
 
     private void writeGradleDependenciesFile(String yaml) throws IOException {
         File gradleDependenciesFile = getGradleDependenciesFile().get();
-        Files.write(gradleDependenciesFile.toPath(), yaml.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING);
+        Files.write(gradleDependenciesFile.toPath(), yaml.getBytes(StandardCharsets.UTF_8));
     }
 }

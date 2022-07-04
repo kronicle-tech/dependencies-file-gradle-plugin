@@ -10,6 +10,10 @@ import java.util.List;
 public class OutputConfiguration {
 
     String name;
+    String description;
+    Boolean visible;
+    Boolean canBeResolved;
+    Boolean resolved;
     List<OutputDependency> dependencies;
     List<OutputResolvedDependency> resolvedDependencies;
 }
