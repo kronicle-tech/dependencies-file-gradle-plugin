@@ -8,6 +8,9 @@ plugins {
     id("pl.allegro.tech.build.axion-release") version "1.13.14"
     id("io.freefair.lombok") version "6.5.0.2"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+
+    // Use this plugin on own codebase
+    id("tech.kronicle.dependencies-file") version "0.1.10"
 }
 
 repositories {
