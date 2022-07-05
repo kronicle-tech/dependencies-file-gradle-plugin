@@ -75,6 +75,7 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
         return dependencies.stream()
                 .sorted(Comparator.comparing(Dependency::getName))
                 .map(this::mapDependency)
+                .distinct()
                 .collect(toList());
     }
 
@@ -147,6 +148,7 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
         return dependencies.stream()
                 .sorted(Comparator.comparing(ResolvedDependency::getName))
                 .map(dependency -> mapResolvedDependency(dependency, direct, mapChildren))
+                .distinct()
                 .collect(toList());
     }
 

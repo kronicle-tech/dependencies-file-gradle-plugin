@@ -37,15 +37,6 @@ configurations:
   - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
   - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
@@ -79,15 +70,6 @@ configurations:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
     - name: "org.yaml:snakeyaml:1.30"
   - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
   - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
@@ -131,15 +113,6 @@ configurations:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
     - name: "org.yaml:snakeyaml:1.30"
   - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
   - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
@@ -192,15 +165,6 @@ configurations:
   - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
   - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
@@ -245,15 +209,6 @@ configurations:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
     - name: "org.yaml:snakeyaml:1.30"
   - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-annotations:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
-    dependencies:
-    - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
-  - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
     dependencies:
     - name: "com.fasterxml.jackson:jackson-bom:2.13.3"
   - name: "com.fasterxml.jackson.core:jackson-core:2.13.3"
