@@ -18,11 +18,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public abstract class GenerateDependenciesFileTask extends DefaultTask {
@@ -81,11 +80,15 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
 
     private OutputDependency mapDependency(Dependency dependency) {
         return OutputDependency.builder()
-                .name(dependency.getName())
-                .group(dependency.getGroup())
+                .name(getDependencyName(dependency))
                 .reason(dependency.getReason())
-                .version(dependency.getVersion())
                 .build();
+    }
+
+    private String getDependencyName(Dependency dependency) {
+        return Stream.of(dependency.getGroup(), dependency.getName(), dependency.getVersion())
+                .filter(Objects::nonNull)
+                .collect(joining(":"));
     }
 
     private List<OutputResolvedDependency> mapResolvedDependencies(Configuration configuration) {
@@ -96,27 +99,73 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
         if (resolvedConfiguration.hasError()) {
             return null;
         }
-        return mapResolvedDependencies(resolvedConfiguration.getFirstLevelModuleDependencies());
+        Set<ResolvedDependency> directDependencies = resolvedConfiguration.getFirstLevelModuleDependencies();
+        List<ResolvedDependency> nonLeafTransitiveDependencies = getNonLeafTransitiveDependencies(
+                directDependencies
+        );
+        return mapResolvedDependencies(directDependencies, nonLeafTransitiveDependencies);
     }
 
-    private List<OutputResolvedDependency> mapResolvedDependencies(Set<ResolvedDependency> dependencies) {
-        if (dependencies.isEmpty()) {
+    private List<ResolvedDependency> getNonLeafTransitiveDependencies(Set<ResolvedDependency> directDependencies) {
+        Queue<ResolvedDependency> queue = new LinkedList<>(directDependencies);
+        List<ResolvedDependency> nonLeafTransitiveDependencies = new ArrayList<>();
+
+        while (!queue.isEmpty()) {
+            ResolvedDependency dependency = queue.remove();
+
+            for (ResolvedDependency child : dependency.getChildren()) {
+                if (!child.getChildren().isEmpty()) {
+                    nonLeafTransitiveDependencies.add(child);
+                    queue.add(child);
+                }
+            }
+        }
+
+        return nonLeafTransitiveDependencies;
+    }
+
+    private List<OutputResolvedDependency> mapResolvedDependencies(
+            Set<ResolvedDependency> directDependencies,
+            List<ResolvedDependency> nonLeafTransitiveDependencies
+    ) {
+        if (directDependencies.isEmpty()) {
             return null;
         }
-        return dependencies.stream()
-                .sorted(Comparator.comparing(ResolvedDependency::getName))
-                .map(this::mapResolvedDependency)
+        return Stream.of(
+                        mapResolvedDependencies(directDependencies, true, true),
+                        mapResolvedDependencies(nonLeafTransitiveDependencies, false, true)
+                )
+                .flatMap(Collection::stream)
                 .collect(toList());
     }
 
-    private OutputResolvedDependency mapResolvedDependency(ResolvedDependency dependency) {
+    private List<OutputResolvedDependency> mapResolvedDependencies(
+            Collection<ResolvedDependency> dependencies,
+            boolean direct,
+            boolean mapChildren
+    ) {
+        return dependencies.stream()
+                .sorted(Comparator.comparing(ResolvedDependency::getName))
+                .map(dependency -> mapResolvedDependency(dependency, direct, mapChildren))
+                .collect(toList());
+    }
+
+    private OutputResolvedDependency mapResolvedDependency(
+            ResolvedDependency dependency,
+            boolean direct,
+            boolean mapChildren
+    ) {
         return OutputResolvedDependency.builder()
                 .name(dependency.getName())
-                .moduleGroup(dependency.getModuleGroup())
-                .moduleName(dependency.getModuleName())
-                .moduleVersion(dependency.getModuleVersion())
-                .resolvedDependencies(mapResolvedDependencies(dependency.getChildren()))
+                .direct(mapDirect(direct))
+                .dependencies(mapChildren
+                        ? mapResolvedDependencies(dependency.getChildren(), false, false)
+                        : null)
                 .build();
+    }
+
+    private Boolean mapDirect(boolean direct) {
+        return direct ? true : null;
     }
 
     private String writeYaml(OutputRoot root) throws JsonProcessingException {

@@ -10,8 +10,6 @@ import java.util.List;
 public class OutputResolvedDependency {
 
     String name;
-    String moduleName;
-    String moduleGroup;
-    String moduleVersion;
-    List<OutputResolvedDependency> resolvedDependencies;
+    Boolean direct;
+    List<OutputResolvedDependency> dependencies;
 }
