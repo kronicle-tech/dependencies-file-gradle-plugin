@@ -8,7 +8,5 @@ import lombok.Value;
 public class OutputDependency {
 
     String name;
-    String group;
     String reason;
-    String version;
 }

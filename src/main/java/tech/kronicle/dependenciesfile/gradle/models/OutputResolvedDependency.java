@@ -10,5 +10,6 @@ import java.util.List;
 public class OutputResolvedDependency {
 
     String name;
-    List<OutputResolvedDependency> resolvedDependencies;
+    Boolean direct;
+    List<OutputResolvedDependency> dependencies;
 }
