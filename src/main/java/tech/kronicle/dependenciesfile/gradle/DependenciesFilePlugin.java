@@ -6,19 +6,21 @@ import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.tasks.TaskContainer;
-import org.gradle.api.tasks.TaskProvider;
+
+import static java.util.Objects.nonNull;
 
 public class DependenciesFilePlugin implements Plugin<Project> {
 
     @Override
-    public void apply(Project target) {
-        final TaskContainer tasks = target.getTasks();
+    public void apply(Project project) {
+        final TaskContainer tasks = project.getTasks();
 
-        String projectName = target.toString();
+        String projectName = project.toString();
         tasks.register(GenerateDependenciesFileTask.TASK_NAME, GenerateDependenciesFileTask.class, new GenerateDependenciesFileTaskAction(projectName));
-        TaskProvider<Task> buildTaskProvider = tasks.named("build");
-        if (buildTaskProvider.isPresent()) {
-            buildTaskProvider.configure(task -> task.dependsOn(GenerateDependenciesFileTask.TASK_NAME));
+
+        Task assembleTask = tasks.findByName("assemble");
+        if (nonNull(assembleTask)) {
+            assembleTask.dependsOn(GenerateDependenciesFileTask.TASK_NAME);
         }
     }
 
