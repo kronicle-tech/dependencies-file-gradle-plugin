@@ -16,21 +16,6 @@ The `gradle-dependencies.yaml` file can be useful:
 3. With tooling like Kronicle that visualises the important dependencies of various codebases
 
 
-## Kronicle
-
-Kronicle is an example of a tool that can use the `gradle-dependencies.yaml` files committed to a Git repo to find all 
-the dependencies used by a codebase.  
-
-See the following links for examples of Kronicle using `gradle-dependencies.yaml` files to visualise dependency versions:
-
-1. Showing `Key Software` badges for the major software used by a codebase/component: https://demo.kronicle.tech/components/kronicle-service
-2. Listing the "Key Software" used by a number of codebases/components: https://demo.kronicle.tech/all-components/key-software
-3. Listing all the dependencies used by a codebase/component, including Gradle and npm dependencies: https://demo.kronicle.tech/components/kronicle-service/software
-4. An API endpoint that lists the same dependencies used by a codebase/component: https://demo.kronicle.tech/api/v1/components/kronicle-service?stateType=softwares&fields=component(id,name,type,description,states)
-
-See https://kronicle.tech and https://demo.kronicle.tech for more information about Kronicle.  
-
-
 ## Usage
 
 The plugin can be added to each project in a Gradle codebase:
@@ -66,3 +51,18 @@ the plugin is applied to:
 
 If a project has a `build` task, the plugin will automatically add its `generateDependenciesFile` task as a dependency 
 for the `build` task.  So everytime `./gradlew build` is run, the `gradle-dependencies.yaml` files will be regenerated.  
+
+
+## Kronicle
+
+Kronicle is an example of a tool that can use the `gradle-dependencies.yaml` files committed to a Git repo to find all
+the dependencies used by a codebase.
+
+See the following links for examples of Kronicle using `gradle-dependencies.yaml` files to visualise dependency versions:
+
+1. Showing `Key Software` badges for the major software used by a codebase/component: https://demo.kronicle.tech/components/kronicle-service
+2. Listing the "Key Software" used by a number of codebases/components: https://demo.kronicle.tech/all-components/key-software
+3. Listing all the dependencies used by a codebase/component, including Gradle and npm dependencies: https://demo.kronicle.tech/components/kronicle-service/software
+4. An API endpoint that lists the same dependencies used by a codebase/component: https://demo.kronicle.tech/api/v1/components/kronicle-service?stateType=softwares&fields=component(id,name,type,description,states)
+
+See https://kronicle.tech and https://demo.kronicle.tech for more information about Kronicle.  
