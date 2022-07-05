@@ -112,9 +112,6 @@ public abstract class GenerateDependenciesFileTask extends DefaultTask {
     private OutputResolvedDependency mapResolvedDependency(ResolvedDependency dependency) {
         return OutputResolvedDependency.builder()
                 .name(dependency.getName())
-                .moduleGroup(dependency.getModuleGroup())
-                .moduleName(dependency.getModuleName())
-                .moduleVersion(dependency.getModuleVersion())
                 .resolvedDependencies(mapResolvedDependencies(dependency.getChildren()))
                 .build();
     }
