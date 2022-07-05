@@ -28,6 +28,8 @@ See the following links for examples of Kronicle using `gradle-dependencies.yaml
 3. Listing all the dependencies used by a codebase/component, including Gradle and npm dependencies: https://demo.kronicle.tech/components/kronicle-service/software
 4. An API endpoint that lists the same dependencies used by a codebase/component: https://demo.kronicle.tech/api/v1/components/kronicle-service?stateType=softwares&fields=component(id,name,type,description,states)
 
+See https://kronicle.tech and https://demo.kronicle.tech for more information about Kronicle.  
+
 
 ## Usage
 
