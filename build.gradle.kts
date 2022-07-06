@@ -10,7 +10,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 
     // Use this plugin on own codebase
-    id("tech.kronicle.dependencies-file") version "0.1.10"
+    id("tech.kronicle.dependencies-file") version "0.1.16"
 }
 
 repositories {
