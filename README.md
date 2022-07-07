@@ -34,7 +34,7 @@ subprojects {
 **build.gradle.kts (Kotlin)**
 ```kotlin
 plugins {
-    id "tech.kronicle.dependencies-file" version "0.1.21"
+    id("tech.kronicle.dependencies-file") version "0.1.21"
 }
 
 subprojects {
