@@ -70,6 +70,7 @@ jobs:
       - name: Set version in documentation
         run: |
           sed -i 's#id "tech.kronicle.dependencies-file" version "[0-9]*\.[0-9]*\.[0-9]*"#id "tech.kronicle.dependencies-file" version "${{ steps.get_version.outputs.VERSION }}"#g' README.md
+          sed -i 's#id("tech.kronicle.dependencies-file") version "[0-9]*\.[0-9]*\.[0-9]*"#id "tech.kronicle.dependencies-file" version "${{ steps.get_version.outputs.VERSION }}"#g' README.md
 
       - name: Commit and push change to documentation
         run: |
