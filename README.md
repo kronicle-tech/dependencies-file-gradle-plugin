@@ -23,7 +23,7 @@ The plugin can be added to each project in a Gradle codebase:
 **build.gradle (Groovy)**
 ```groovy
 plugins {
-    id "tech.kronicle.dependencies-file" version "0.1.20"
+    id "tech.kronicle.dependencies-file" version "0.1.21"
 }
 
 subprojects {
@@ -34,7 +34,7 @@ subprojects {
 **build.gradle.kts (Kotlin)**
 ```kotlin
 plugins {
-    id("tech.kronicle.dependencies-file") version "0.1.16"
+    id "tech.kronicle.dependencies-file" version "0.1.21"
 }
 
 subprojects {
