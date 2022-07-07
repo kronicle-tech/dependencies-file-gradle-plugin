@@ -63,6 +63,18 @@ jobs:
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
 
+      - name: Set version in documentation
+        run: |
+          sed -i 's#id "tech.kronicle.dependencies-file" version "[0-9]*\.[0-9]*\.[0-9]*"#id "tech.kronicle.dependencies-file" version "${{ steps.get_version.outputs.VERSION }}"#g' README.md
+
+      - name: Commit and push change to documentation
+        run: |
+          git config user.email "deploy@kronicle.tech"
+          git config user.name "Kronicle Deploy"
+          git add README.md
+          git commit --allow-empty -m "Update version in documentation to v${{ steps.get_version.outputs.VERSION }}"
+          git push
+
       - name: Clean up Gradle Cache
         if: ${{ inputs.caching }}
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
