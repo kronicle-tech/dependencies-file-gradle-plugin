@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         # Based on https://axion-release-plugin.readthedocs.io/en/latest/configuration/ci_servers/#github-actions
         with:
           fetch-depth: 0
